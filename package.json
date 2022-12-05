@@ -1,0 +1,19 @@
+{
+  "name": "etherscan",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
+    "node-fetch": "^3.3.0",
+    "node-telegram-bot-api": "^0.60.0"
+  }
+}
