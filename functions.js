@@ -5,7 +5,7 @@ async function convertToUSD(etherValue) {
       `https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD&api_key=${process.env.MINAPI_KEY}`
     );
     const data = await response.json();
-    const usd = etherValue * data.USD;
+    const usd = (etherValue * data.USD).toFixed(2);
     console.log("This USD: " + usd);
     return usd;
   }
@@ -32,5 +32,5 @@ async function convertToUSD(etherValue) {
     console.log("This USD: " + usd);
     return usd;
   }
-
+  
   export{convertToUSD,getEtherValue,getWalletEtherValue}
