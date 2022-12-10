@@ -2,28 +2,37 @@ import fetch from "node-fetch";
 // import ethers from 'ethers';
 import dotenv from "dotenv";
 import telegramBot from "node-telegram-bot-api";
-import { convertToUSD } from "./functions.js";
-import { getEtherValue } from "./functions.js";
-import { getWalletEtherValue } from "./functions.js";
+import {
+  convertToUSD,
+  getEtherValue,
+  getWalletEtherValue,
+} from "./functions.js";
+import express from "express";
+const app = express();
+
 dotenv.config();
 
 const bot = new telegramBot(process.env.TELEGRAM_KEY, { polling: true });
+
+const port = process.env.PORT || 8080;
 
 const adresses = ["0x2e7212016ba40a1ee366f3a54c5ad6b4916eae74"];
 
 bot.on("message", async (message) => {
   console.log("Message received: " + message.text);
+
   if (message.text?.startsWith("!value")) {
     /*  const array = message.text.split(" ");
     const walletAddress = array[1]; */
+
     const etherValue = await getWalletEtherValue(adresses);
-    console.log("in ether: " + etherValue);
     const usdValue = await convertToUSD(etherValue);
+    bot.sendDocument(message.chat.id, "abc.gif");
     adresses.map((address) => {
       bot.sendMessage(
         message.chat.id,
-        `*Ethers*: ${etherValue}\n*Wallet value in USD*: ${usdValue} ---
-         `,
+        `*Pool prize=* ${usdValue}$
+        `,
         {
           parse_mode: "Markdown",
         }
@@ -33,10 +42,12 @@ bot.on("message", async (message) => {
   if (message.text === "!ether") {
     bot.sendMessage(
       message.chat.id,
-      `*Ether value in USD*: ` + (await getEtherValue()),
+      `*Money in the pool=$*: ` + (await getEtherValue()),
       {
         parse_mode: "Markdown",
       }
     );
   }
 });
+
+app.listen(port, () => console.log(`HelloNode app listening on port ${port}!`));
